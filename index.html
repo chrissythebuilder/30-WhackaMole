@@ -38,6 +38,7 @@
   const moles = document.querySelectorAll('.mole');
   let lastHole;
   let timeUp = false;
+  let score = 0;
 
   function randomTime(min, max) {
       return Math.round(Math.random() * (max - min) + min);
@@ -58,7 +59,7 @@
 
 //   function for popping the moles up
     function peep() {
-        const time = randomTime(200, 1000);
+        const time = randomTime(200, 2000);
         const hole = randomHole(holes);
         console.log(time, hole);
         hole.classList.add("up");
@@ -72,9 +73,20 @@
     function startGame() {
         scoreBoard.textContent = 0;
         timeUp = false;
+        score = 0;
         peep();
         setTimeout(() => timeUp = true, 10000);
     }
+
+    function bonk(e) {
+        // isTrusted property ensures that the clicks are from the user's mouse and not automatically used
+        if (!e.isTrusted) return;
+        score++;
+        this.classList.remove("up");
+        scoreBoard.textContent = score;
+    }
+
+    moles.forEach(mole => mole.addEventListener("click", bonk));
 
 </script>
 </body>
